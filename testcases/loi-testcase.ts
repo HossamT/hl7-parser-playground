@@ -173,7 +173,7 @@ export const LOI: TestCase = {
         },
         {
             message: {
-                name: 'JAIMIE_VALID_MESSAGE_WITH_2REP_ORDER_PRIOR',
+                name: 'JAIMIE_VALID_MESSAGE_WITH_ORDER_PRIOR',
                 message: [
                     "MSH",
                     "PID",
