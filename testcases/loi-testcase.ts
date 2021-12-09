@@ -114,66 +114,66 @@ export const LOI: TestCase = {
         ]
     },
     expectations: [
-        // {
-        //     message: {
-        //         name: 'JAIMIE_VALID_MESSAGE',
-        //         message: [
-        //             "MSH",
-        //             "PID",
-        //             "ORC",
-        //             "OBR",
-        //             "SPM",
-        //             "SGT",
-        //             "ORC",
-        //             "OBR",
-        //             "SPM",
-        //             "SGT",
-        //         ]
-        //     },
-        //     parseAs: [
-        //         { name: 'MSH', cardinality: '1', complex: false, instance: 1 },
-        //         {
-        //             name: 'PATIENT', cardinality: '1', complex: true, instance: 1, children: [
-        //                 { name: 'PID', cardinality: '1', complex: false, instance: 1 },
-        //             ]
-        //         },
-        //         {
-        //             name: 'ORDER', cardinality: '*', complex: true, instance: 1, children: [
-        //                 { name: 'ORC', cardinality: '1', complex: false, instance: 1 },
-        //                 {
-        //                     name: 'OBSERVATION_REQUEST', cardinality: '1', complex: true, instance: 1, children: [
-        //                         { name: 'OBR', cardinality: '1', complex: false, instance: 1 },
-        //                         {
-        //                             name: 'SPECIMEN', cardinality: '*', complex: true, instance: 1, children: [
-        //                                 { name: 'SPM', cardinality: '1', complex: false, instance: 1 },
-        //                             ]
-        //                         },
-        //                         { name: 'SGT', cardinality: '1', complex: false, instance: 1 }
-        //                     ]
-        //                 }
-        //             ]
-        //         },
-        //         {
-        //             name: 'ORDER', cardinality: '*', complex: true, instance: 2, children: [
-        //                 { name: 'ORC', cardinality: '1', complex: false, instance: 1 },
-        //                 {
-        //                     name: 'OBSERVATION_REQUEST', cardinality: '1', complex: true, instance: 1, children: [
-        //                         { name: 'OBR', cardinality: '1', complex: false, instance: 1 },
-        //                         {
-        //                             name: 'SPECIMEN', cardinality: '*', complex: true, instance: 1, children: [
-        //                                 { name: 'SPM', cardinality: '1', complex: false, instance: 1 },
-        //                             ]
-        //                         },
-        //                         { name: 'SGT', cardinality: '1', complex: false, instance: 1 }
-        //                     ]
-        //                 }
-        //             ]
-        //         },
-        //     ]
-        // },
         {
             message: {
-                name: 'JAIMIE_VALID_MESSAGE_WITH_2REP_ORDER_PRIOR',
+                name: 'JAIMIE_VALID_MESSAGE',
+                message: [
+                    "MSH",
+                    "PID",
+                    "ORC",
+                    "OBR",
+                    "SPM",
+                    "SGT",
+                    "ORC",
+                    "OBR",
+                    "SPM",
+                    "SGT",
+                ]
+            },
+            parseAs: [
+                { name: 'MSH', cardinality: '1', complex: false, instance: 1 },
+                {
+                    name: 'PATIENT', cardinality: '1', complex: true, instance: 1, children: [
+                        { name: 'PID', cardinality: '1', complex: false, instance: 1 },
+                    ]
+                },
+                {
+                    name: 'ORDER', cardinality: '*', complex: true, instance: 1, children: [
+                        { name: 'ORC', cardinality: '1', complex: false, instance: 1 },
+                        {
+                            name: 'OBSERVATION_REQUEST', cardinality: '1', complex: true, instance: 1, children: [
+                                { name: 'OBR', cardinality: '1', complex: false, instance: 1 },
+                                {
+                                    name: 'SPECIMEN', cardinality: '*', complex: true, instance: 1, children: [
+                                        { name: 'SPM', cardinality: '1', complex: false, instance: 1 },
+                                    ]
+                                },
+                                { name: 'SGT', cardinality: '1', complex: false, instance: 1 }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'ORDER', cardinality: '*', complex: true, instance: 2, children: [
+                        { name: 'ORC', cardinality: '1', complex: false, instance: 1 },
+                        {
+                            name: 'OBSERVATION_REQUEST', cardinality: '1', complex: true, instance: 1, children: [
+                                { name: 'OBR', cardinality: '1', complex: false, instance: 1 },
+                                {
+                                    name: 'SPECIMEN', cardinality: '*', complex: true, instance: 1, children: [
+                                        { name: 'SPM', cardinality: '1', complex: false, instance: 1 },
+                                    ]
+                                },
+                                { name: 'SGT', cardinality: '1', complex: false, instance: 1 }
+                            ]
+                        }
+                    ]
+                },
+            ]
+        },
+        {
+            message: {
+                name: 'JAIMIE_VALID_MESSAGE_WITH_ORDER_PRIOR',
                 message: [
                     "MSH",
                     "PID",
