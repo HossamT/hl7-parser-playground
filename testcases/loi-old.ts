@@ -470,6 +470,54 @@ export const LOIv1: TestCase = {
             },
             ]
         }, 
+		
+		 		{
+            message: {
+                name: 'Pap Smear v2',
+                message: [
+                    "MSH",
+                    "PID",
+                    "ORC",
+                    "OBR",
+                    "DG1",
+					"OBX",
+					"OBX",
+					"SPM",
+                ]
+            },
+            parseAs: [
+ 				{ name: 'MSH', cardinality: '1', complex: false, instance: 1 },
+				{
+					name: 'PATIENT', cardinality: '1', complex: true, instance: 1, children: [
+                    { name: 'PID', cardinality: '1', complex: false, instance: 1 },
+                ]
+            },
+            {
+                name: 'ORDER', cardinality: '*', complex: true, instance: 1, children: [
+                    { name: 'ORC', cardinality: '1', complex: false, instance: 1 },
+                    {
+                        name: 'OBSERVATION_REQUEST', cardinality: '1', complex: true, instance: 1, children: [
+                            { name: 'OBR', cardinality: '1', complex: false, instance: 1 },
+                            { name: 'DG1', cardinality: '*', complex: false, instance: 1 },
+							{
+                                name: 'OBSERVATION', cardinality: '*', complex: true, instance: 1, children: [
+                                    { name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+                                    { name: 'OBX', cardinality: '1', complex: false, instance: 2 },
+                                ]
+                            },
+							{
+								name: 'SPECIMEN', cardinality: '*', complex: true, instance: 1, children: [
+								{ name: 'SPM', cardinality: '1', complex: false, instance: 1 },
+								]
+							},	
+                        ]
+                    },				
+                ]
+            },
+            ]
+        }, 
+		
+		
 /* 		{
             message: {
                 name: 'GHP',
