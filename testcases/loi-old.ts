@@ -470,55 +470,7 @@ export const LOIv1: TestCase = {
             },
             ]
         }, 
-		
-		 		{
-            message: {
-                name: 'Pap Smear v2',
-                message: [
-                    "MSH",
-                    "PID",
-                    "ORC",
-                    "OBR",
-                    "DG1",
-					"OBX",
-					"OBX",
-					"SPM",
-                ]
-            },
-            parseAs: [
- 				{ name: 'MSH', cardinality: '1', complex: false, instance: 1 },
-				{
-					name: 'PATIENT', cardinality: '1', complex: true, instance: 1, children: [
-                    { name: 'PID', cardinality: '1', complex: false, instance: 1 },
-                ]
-            },
-            {
-                name: 'ORDER', cardinality: '*', complex: true, instance: 1, children: [
-                    { name: 'ORC', cardinality: '1', complex: false, instance: 1 },
-                    {
-                        name: 'OBSERVATION_REQUEST', cardinality: '1', complex: true, instance: 1, children: [
-                            { name: 'OBR', cardinality: '1', complex: false, instance: 1 },
-                            { name: 'DG1', cardinality: '*', complex: false, instance: 1 },
-							{
-                                name: 'OBSERVATION', cardinality: '*', complex: true, instance: 1, children: [
-                                    { name: 'OBX', cardinality: '1', complex: false, instance: 1 },
-                                    { name: 'OBX', cardinality: '1', complex: false, instance: 2 },
-                                ]
-                            },
-							{
-								name: 'SPECIMEN', cardinality: '*', complex: true, instance: 1, children: [
-								{ name: 'SPM', cardinality: '1', complex: false, instance: 1 },
-								]
-							},	
-                        ]
-                    },				
-                ]
-            },
-            ]
-        }, 
-		
-		
-/* 		{
+ 		{
             message: {
                 name: 'GHP',
                 message: [
@@ -532,20 +484,78 @@ export const LOIv1: TestCase = {
                     "DG1",
                     "DG1",
                     "DG1",
-					"ORC",
+ 					"ORC",
 					"TQ1",
 					"OBR",
 					"DG1",
-					"ORC",
+/* 					"ORC",
 					"TQ1",
 					"OBR",
-					"DG1",
+					"DG1",  */
                 ]
             },
             parseAs: [
- 
+			{ name: 'MSH', cardinality: '1', complex: false, instance: 1 },
+            {
+                name: 'PATIENT', cardinality: '1', complex: true, instance: 1, children: [
+                    { name: 'PID', cardinality: '1', complex: false, instance: 1 },
+                    { name: 'NK1', cardinality: '*', complex: false, instance: 1 },
+                    { name: 'NK1', cardinality: '*', complex: false, instance: 2 },
+                ]
+            },
+            {
+                name: 'ORDER', cardinality: '*', complex: true, instance: 1, children: [
+                    { name: 'ORC', cardinality: '1', complex: false, instance: 1 },
+                    {
+                        name: 'TIMING', cardinality: '1', complex: true, instance: 1, children: [
+                            { name: 'TQ1', cardinality: '1', complex: false, instance: 1 },
+                        ]
+                    },
+                    {
+                        name: 'OBSERVATION_REQUEST', cardinality: '1', complex: true, instance: 1, children: [
+                            { name: 'OBR', cardinality: '1', complex: false, instance: 1 },
+                            { name: 'DG1', cardinality: '*', complex: false, instance: 1 },
+                            { name: 'DG1', cardinality: '*', complex: false, instance: 2 },
+                            { name: 'DG1', cardinality: '*', complex: false, instance: 3 },
+                        ]
+                    },
+                ]
+            },
+			// this is where it fails
+ 			{
+                name: 'ORDER', cardinality: '*', complex: true, instance: 2, children: [
+                    { name: 'ORC', cardinality: '1', complex: false, instance: 1 },
+                    {
+                        name: 'TIMING', cardinality: '1', complex: true, instance: 1, children: [
+                            { name: 'TQ1', cardinality: '1', complex: false, instance: 1 },
+                        ]
+                    },
+                    {
+                        name: 'OBSERVATION_REQUEST', cardinality: '1', complex: true, instance: 1, children: [
+                            { name: 'OBR', cardinality: '1', complex: false, instance: 1 },
+                            { name: 'DG1', cardinality: '*', complex: false, instance: 1 },
+                        ]
+                    },
+                ]
+            },
+/*			{
+                name: 'ORDER', cardinality: '*', complex: true, instance: 3, children: [
+                    { name: 'ORC', cardinality: '1', complex: false, instance: 1 },
+                    {
+                        name: 'TIMING', cardinality: '1', complex: true, instance: 1, children: [
+                            { name: 'TQ1', cardinality: '1', complex: false, instance: 1 },
+                        ]
+                    },
+                    {
+                        name: 'OBSERVATION_REQUEST', cardinality: '1', complex: true, instance: 1, children: [
+                            { name: 'OBR', cardinality: '1', complex: false, instance: 1 },
+                            { name: 'DG1', cardinality: '*', complex: false, instance: 1 },
+                        ]
+                    },
+                ]
+            }, */
             ]
-        }, */
+        }, 
 /* 		{
             message: {
                 name: 'Creatinine Clearance',
