@@ -2,18 +2,20 @@ import { ParserFn, MessageNode, ProfileNode } from '../main';
 import { span, makeNode } from '../utils';
 import _ from 'lodash';
 
-export const greedyParser: ParserFn = (profile: ProfileNode[], message: string[]): [MessageNode[], string[]] => {
-    return parse(profile, message);
+export function greedyParser(match: (line: string, node: ProfileNode) => boolean): ParserFn {
+    return (profile: ProfileNode[], message: string[]): [MessageNode[], string[]] => {
+        return parse(profile, message, true, match);
+    }
 }
 
-function parse(nodes: ProfileNode[], stack: string[]): [MessageNode[], string[]] {
+function parse(nodes: ProfileNode[], stack: string[], head: boolean, match: (line: string, node: ProfileNode) => boolean): [MessageNode[], string[]] {
     let ps: MessageNode[] = [];
     let rs: string[] = [...stack];
-
+    let _head = head;
     for (const node of nodes) {
         switch (node.complex) {
             case true:
-                const [parsed_, remaining_] = parseComplex(rs, node, 1)
+                const [parsed_, remaining_] = parseComplex(rs, node, 1, match)
                 ps = [
                     ...ps,
                     ...parsed_
@@ -23,7 +25,7 @@ function parse(nodes: ProfileNode[], stack: string[]): [MessageNode[], string[]]
                 ];
                 break;
             case false:
-                const [parsed, remaining] = parsePrimitive(rs, node);
+                const [parsed, remaining] = parsePrimitive(rs, node, head, match);
                 ps = [
                     ...ps,
                     ...parsed
@@ -33,20 +35,20 @@ function parse(nodes: ProfileNode[], stack: string[]): [MessageNode[], string[]]
                 ];
                 break;
         }
+        head = false;
     }
     return [ps, rs];
-    throw new Error('Issue ?');
 }
 
 
-function parseComplex(stack: string[], node: ProfileNode, i: number): [MessageNode[], string[]] {
+function parseComplex(stack: string[], node: ProfileNode, i: number, match: (line: string, node: ProfileNode) => boolean): [MessageNode[], string[]] {
     const matchAt = (node.children || []).findIndex((child) => match(stack[0], child))
     if (matchAt !== -1) {
 
 
         const [_m, nodes] = span((node.children || []), (_children, i) => i !== matchAt);
 
-        const [parsed, remaining] = parse(nodes, stack);
+        const [parsed, remaining] = parse(nodes, stack, _m.length === 0, match);
 
         const instance: MessageNode = {
             ...makeNode(node, false, i),
@@ -60,7 +62,7 @@ function parseComplex(stack: string[], node: ProfileNode, i: number): [MessageNo
 
         // Greed!
         if (exists && hasMore) {
-            const [instances, left] = parseComplex(remaining, node, i + 1);
+            const [instances, left] = parseComplex(remaining, node, i + 1, match);
             return [[instance, ...instances], left]
 
         } else {
@@ -72,31 +74,23 @@ function parseComplex(stack: string[], node: ProfileNode, i: number): [MessageNo
     }
 }
 
-function parsePrimitive(stack: string[], node: ProfileNode): [MessageNode[], string[]] {
-    // Span is greedy
-    const [matches, remaining] = span(stack, line => match(line, node));
-    if (matches.length > 0) {
-        return [matches.map((_x, i) => makeNode(node, false, i + 1)), remaining]
+function parsePrimitive(stack: string[], node: ProfileNode, head: boolean, match: (line: string, node: ProfileNode) => boolean): [MessageNode[], string[]] {
+    if (!head) {
+        // Span is greedy
+        const [matches, remaining] = span(stack, line => match(line, node));
+        if (matches.length > 0) {
+            return [matches.map((_x, i) => makeNode(node, false, i + 1)), remaining]
+        } else {
+            return [[], remaining]
+        }
     } else {
-        return [[], remaining]
+        if (match(stack[0], node)) {
+            stack.splice(0, 1);
+            return [[makeNode(node, false, 1)], stack]
+        } else {
+            return [[], stack]
+        }
     }
 }
 
-function makeEmptyNode(parsed: MessageNode[], node: ProfileNode): MessageNode[] {
-    if (parsed.length === 0) {
-        return [makeNode(node, true, 0)];
-    } else {
-        return [];
-    }
-}
 
-export function match(line: string, node: ProfileNode): boolean {
-    switch (node.complex) {
-        case true:
-            return (node.children || []).some((child) => {
-                return match(line, child);
-            })
-        case false:
-            return line === node.name;
-    }
-}

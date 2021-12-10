@@ -1,10 +1,10 @@
 import { Parser } from '../main';
-import { greedyParser } from './greedy';
-import { smartLookForward } from './smart_look_forward';
+import { smartLookForward } from './smart-look-forward';
+import { simpleLookForward } from './simple-look-forward';
 export default [
     {
-        name: 'Greedy',
-        fn: greedyParser,
+        name: 'Simple Look Forward (Current0',
+        fn: simpleLookForward,
     },
     {
         name: 'Smart Look Forward',
