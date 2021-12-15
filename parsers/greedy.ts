@@ -11,7 +11,6 @@ export function greedyParser(match: (line: string, node: ProfileNode) => boolean
 function parse(nodes: ProfileNode[], stack: string[], head: boolean, match: (line: string, node: ProfileNode) => boolean): [MessageNode[], string[]] {
     let ps: MessageNode[] = [];
     let rs: string[] = [...stack];
-    let _head = head;
     for (const node of nodes) {
         switch (node.complex) {
             case true:
@@ -42,33 +41,37 @@ function parse(nodes: ProfileNode[], stack: string[], head: boolean, match: (lin
 
 
 function parseComplex(stack: string[], node: ProfileNode, i: number, match: (line: string, node: ProfileNode) => boolean): [MessageNode[], string[]] {
-    const matchAt = (node.children || []).findIndex((child) => match(stack[0], child))
-    if (matchAt !== -1) {
+    if (match(stack[0], node)) {
+        const matchAt = (node.children || []).findIndex((child) => match(stack[0], child))
+        if (matchAt !== -1) {
 
 
-        const [_m, nodes] = span((node.children || []), (_children, i) => i !== matchAt);
+            const [_m, nodes] = span((node.children || []), (_children, i) => i !== matchAt);
 
-        const [parsed, remaining] = parse(nodes, stack, _m.length === 0, match);
+            const [parsed, remaining] = parse(nodes, stack, _m.length === 0, match);
 
-        const instance: MessageNode = {
-            ...makeNode(node, false, i),
-            children: [
-                ...parsed,
-            ]
-        }
+            const instance: MessageNode = {
+                ...makeNode(node, false, i),
+                children: [
+                    ...parsed,
+                ]
+            }
 
-        const exists = parsed.length > 0;
-        const hasMore = remaining.length > 0;
+            const exists = parsed.length > 0;
+            const hasMore = remaining.length > 0;
 
-        // Greed!
-        if (exists && hasMore) {
-            const [instances, left] = parseComplex(remaining, node, i + 1, match);
-            return [[instance, ...instances], left]
+            // Greed!
+            if (exists && hasMore) {
+                const [instances, left] = parseComplex(remaining, node, i + 1, match);
+                return [[instance, ...instances], left]
+
+            } else {
+                return [[instance], remaining]
+            }
 
         } else {
-            return [[instance], remaining]
+            return [[], stack]
         }
-
     } else {
         return [[], stack]
     }
