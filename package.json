@@ -4,7 +4,9 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node main.ts"
+    "dev": "ts-node main.ts",
+    "op": "ts-node op_eval.ts",
+    "transform": "ts-node transformTestcasesToScala.ts"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.177",
