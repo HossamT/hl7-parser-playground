@@ -1,7 +1,8 @@
 import { TestCase } from '../main';
-export const ORU_LRI: TestCase = {
+/* Test cases for HL7 v2.5.1 ORU. Applies to LRI and  CCHD*/
+export const ORU: TestCase = {
     profile: {
-        name: 'ORU_LRI',
+        name: 'ORU',
         nodes: [
             { name: 'MSH', cardinality: '1', complex: false},
             { name: 'SFT', cardinality: '*', complex: false},
@@ -782,7 +783,7 @@ export const ORU_LRI: TestCase = {
         },	
 	 	{
             message: {
-                name: 'Reflex #1 - the first ORC present',
+                name: 'Reflex #1 - the first ORC',
                 message: [
 					"MSH",
 					"PID",
@@ -986,17 +987,211 @@ export const ORU_LRI: TestCase = {
 				} 
             ]
         },		
-		/* 		{
+		{
             message: {
-                name: '',
+                name: 'CCHD example message',
                 message: [
-
+					"MSH",
+					"PID",
+					"NK1",
+					"PV1",
+					"OBR",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX",
+					"OBX"
                 ]
             },
             parseAs: [
-  
+  				{ name: 'MSH', cardinality: '1', complex: false, instance: 1 },
+				{
+					name: 'PATIENT_RESULT', cardinality: '*', complex: true, instance: 1, children: [
+						{
+							name: 'PATIENT', cardinality: '1', complex: true, instance: 1, children: [
+								{ name: 'PID', cardinality: '1', complex: false, instance: 1 },
+								{ name: 'NK1', cardinality: '*', complex: false, instance: 1 },
+								{
+									name: 'VISIT', cardinality: '1', complex: true, instance : 1, children: [
+										{ name: 'PV1', cardinality: '1', complex: false, instance : 1 },
+									]
+								}
+							]
+						},
+						{
+							name: 'ORDER_OBSERVATION', cardinality: '*', complex: true, instance: 1, children: [
+								{ name: 'OBR', cardinality: '1', complex: false, instance: 1 },
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 1, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 2, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},							
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 3, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 4, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 5, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 6, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 7, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 8, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 9, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 10, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 11, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 12, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 13, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 14, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 15, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 16, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 17, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 18, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 19, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},
+								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 20, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 21, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 22, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 23, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 24, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 25, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},								
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 26, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 27, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},
+								{
+									name: 'OBSERVATION', cardinality: '*', complex: true, instance: 28, children: [
+										{ name: 'OBX', cardinality: '1', complex: false, instance: 1 },
+									]
+								},
+							]
+						},
+					]
+				} 
             ]
-        }, */
+        },
 				/* 		{
             message: {
                 name: '',

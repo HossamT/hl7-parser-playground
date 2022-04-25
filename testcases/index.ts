@@ -1,9 +1,11 @@
 import { TestCase } from '../main';
 import { LOI } from './loi-testcase';
 import { LOIv1 } from './loi-old';
-import { ORU_LRI } from './lri';
+import { ORU } from './oru';
+import { VXU } from './vxu';
 export default [
     LOI,
 	LOIv1,
-	ORU_LRI
+	ORU,
+	VXU
 ] as TestCase[];
