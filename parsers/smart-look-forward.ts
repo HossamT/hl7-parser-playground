@@ -1,5 +1,5 @@
-import { ParserFn, ProfileNode } from '../main';
-import { span } from '../utils';
+import { ParserFn, MessageNode, ProfileNode } from '../model/parser';
+import { span } from '../utils/parser';
 import _ from 'lodash';
 import { greedyParser } from './greedy';
 

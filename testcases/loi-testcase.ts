@@ -1,4 +1,5 @@
-import { TestCase } from '../main';
+import { TestCase } from '../model/parser';
+
 export const LOI: TestCase = {
     profile: {
         name: 'LOI',

@@ -1,31 +1,58 @@
-import { TestCase, ProfileNode, MessageNode } from './main';
-import { LOI } from './testcases/loi-testcase';
-import { LOIv1 } from './testcases/loi-old';
+import { MessageNode, ProfileNode, TestCase } from '../model/parser';
+import { normalizeName } from '../utils/generator';
 
 export interface IContext { counter: Record<string, number>, line: number }
 
-const profilesMap: Record<string, string> = {};
+let profilesMap: Record<string, string> = {};
 
+export function transformTestCase(tc: TestCase): { spec: string[], payload: string } {
+    profilesMap = {};
+    const profileVarName = `${tc.profile.name}_profile`;
+    const profileDefinition = profile(tc.profile.nodes, tc.profile.name);
+    const mockData = tc.expectations.map((exp) => {
+        const mockName = normalizeName(`${exp.message.name}_${tc.profile.name}`);
+        const mockMessage = `"""${exp.message.message.map(s => `/${s}`).join('\n\t')}""".stripMargin('/')`;
+        const mockExpectation = message(exp.parseAs, tc.profile.name, { counter: {}, line: 0 });
+        return [mockName, mockMessage, mockExpectation];
+    });
 
-function transformTestCase(tc: TestCase): string {
-    const prof = profile(tc.profile.nodes, tc.profile.name);
-    const msgs = [...tc.expectations].map((exp) => {
-        const name = (exp.message.name || '').toUpperCase().replace(new RegExp(' ', 'g'), '_');
-        console.log(`def ${tc.profile.name}_${name}_TEST = check(${tc.profile.name}_${name})`);
-        return `val ${tc.profile.name}_${name} = ("""${exp.message.message.map(s => `/${s}`).join('\n')}""".stripMargin('/'), ${message(exp.parseAs, tc.profile.name, { counter: {}, line: 0 })})`
-    }).join('\n');
-    const resources = Object.keys(profilesMap).map((k) => {
-        return `val ${k} = ${profilesMap[k]}`
-    }).join('\n');
-    return `
+    const spec = mockData.map((md) => {
+        return `${md[0]} $${md[0]}_TEST`
+    });
+
+    // Test Definitions
+    const testDefs = mockData.map((md) => {
+        return `def ${md[0]}_TEST = check(${md[0]}, ${profileVarName})`
+    }).join('\n\t');
+
     // Resources
-    ${resources}
+    const resourceDefs = Object.keys(profilesMap).map((k) => {
+        return `val ${k} = ${profilesMap[k]}`
+    }).join('\n\t');
 
-    //TestCase ${tc.profile.name}
-    val ${tc.profile.name}_profile: List[SegRefOrGroup] = ${prof}
-    ${msgs}
-    `;
+    // Profile
+    const profileVarDef = `val ${profileVarName}: List[SegRefOrGroup] = ${profileDefinition}`
+
+    // Mocks
+    const mockDataDef = mockData.map((md) => {
+        return `val ${md[0]} = (${md[1]}, ${md[2]})`
+    }).join('\n\t');
+
+    return {
+        payload: `\n\t${[
+            '// Test Definitions',
+            testDefs,
+            '// Resources',
+            resourceDefs,
+            '// Profile',
+            profileVarDef,
+            '// Mocks',
+            mockDataDef
+        ].join('\n\t')}\n\t`,
+        spec,
+    };
 }
+
 
 function profile(nodes: ProfileNode[], prefix: string): string {
     const list = nodes.map((node, i) => {
@@ -34,7 +61,7 @@ function profile(nodes: ProfileNode[], prefix: string): string {
         } else {
             return segRef(node, i + 1, prefix)
         }
-    }).join(',\n');
+    }).join(',\n\t');
 
     return `List(${list})`;
 }
@@ -46,7 +73,7 @@ function message(nodes: MessageNode[], prefix: string, context: IContext): strin
         } else {
             return segInstance(node, prefix, context)
         }
-    }).join(',\n');
+    }).join(',\n\t');
 
     return `List(${list})`;
 }
@@ -95,8 +122,3 @@ function segInstance(node: MessageNode, prefix: string, context: IContext): stri
 function location(node: MessageNode, context: IContext): string {
     return `Location(EType.Segment, "${node.name}", "${node.name}", ${context.line}, 1, "${node.name}[${context.counter[node.name]}]")`
 }
-
-
-
-console.log(transformTestCase(LOIv1));
-

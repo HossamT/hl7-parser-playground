@@ -1,4 +1,4 @@
-import { ProfileNode, MessageNode } from './main';
+import { ProfileNode, MessageNode } from '../model/parser';
 
 
 export function span<T>(list: T[], predicate: (node: T, index?: number) => boolean): [T[], T[]] {

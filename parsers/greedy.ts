@@ -1,5 +1,5 @@
-import { ParserFn, MessageNode, ProfileNode } from '../main';
-import { span, makeNode } from '../utils';
+import { ParserFn, MessageNode, ProfileNode } from '../model/parser';
+import { span, makeNode } from '../utils/parser';
 import _ from 'lodash';
 
 export function greedyParser(match: (line: string, node: ProfileNode) => boolean): ParserFn {

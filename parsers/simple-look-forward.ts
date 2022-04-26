@@ -1,4 +1,4 @@
-import { ParserFn, ProfileNode } from '../main';
+import { ParserFn, MessageNode, ProfileNode } from '../model/parser';
 import { greedyParser } from './greedy';
 
 

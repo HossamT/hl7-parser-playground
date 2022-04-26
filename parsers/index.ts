@@ -1,4 +1,4 @@
-import { Parser } from '../main';
+import { Parser } from '../model/parser';
 import { smartLookForward } from './smart-look-forward';
 import { simpleLookForward } from './simple-look-forward';
 export default [
